@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: apigateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: products
+              uri: ${PRODUCT_URL:http://localhost:8901}
+              predicates:
+                - Path=/api/products/**
+server:
+  port: 8080
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_ENDPOINT:http://localhost:9411/api/v2/spans}
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,circuitbreakers,circuitbreakerevents
